@@ -1,39 +1,65 @@
-import { createStore } from 'redux';
+import { createSlice, configureStore } from '@reduxjs/toolkit';
 
 const initialState = { counter: 0, toggleVisible: true };
 
-const counterReducer = (state = initialState, action) => {
-    if (action.type === 'increment') {
-        return {
-            counter: state.counter + 1,
-            toggleVisible: state.toggleVisible
+const counterSlice = createSlice({
+    name: 'counter',
+    initialState: initialState,
+    reducers: {
+        increment(state) {
+            state.counter++
+        },
+        increase(state, action) {
+            state.counter = state.counter + action.payload
+        },
+        decrement(state) {
+            state.counter--
+        },
+        toggle(state) {
+            state.toggleVisible = !state.toggleVisible
         }
     }
+})
 
-    if (action.type === 'increase') {
-        return {
-            counter: state.counter + action.amount,
-            toggleVisible: state.toggleVisible
-        }
-    }
 
-    if (action.type === 'decrement') {
-        return {
-            counter: state.counter - 1,
-            toggleVisible: state.toggleVisible
-        }
-    }
+const store = configureStore({
+    reducer: {counter: counterSlice.reducer}
+});
 
-    if (action.type === 'toggle') {
-        return {
-            toggleVisible: !state.toggleVisible,
-            counter: state.counter,
-        }
-    }
+export const counterActions = counterSlice.actions;
 
-    return state;
-}
+// const counterReducer = (state = initialState, action) => {
+//     if (action.type === 'increment') {
+//         return {
+//             counter: state.counter + 1,
+//             toggleVisible: state.toggleVisible
+//         }
+//     }
 
-const store = createStore(counterReducer);
+//     if (action.type === 'increase') {
+//         return {
+//             counter: state.counter + action.amount,
+//             toggleVisible: state.toggleVisible
+//         }
+//     }
+
+//     if (action.type === 'decrement') {
+//         return {
+//             counter: state.counter - 1,
+//             toggleVisible: state.toggleVisible
+//         }
+//     }
+
+//     if (action.type === 'toggle') {
+//         return {
+//             toggleVisible: !state.toggleVisible,
+//             counter: state.counter,
+//         }
+//     }
+
+//     return state;
+// }
+
+// const store = createStore(counterReducer);
 
 export default store;
